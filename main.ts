@@ -3,6 +3,7 @@ import { App, TerraformOutput, TerraformStack } from "cdktf";
 import { AzurermProvider } from "@cdktf/provider-azurerm/lib/provider";
 import { ResourceGroup } from "@cdktf/provider-azurerm/lib/resource-group";
 import { NordcloudContainerApp } from "./constructs/container";
+import { NordcloudAks } from "./constructs/aks";
 
 
 class Application extends TerraformStack {
@@ -31,6 +32,25 @@ class Application extends TerraformStack {
       value: app.address,
       sensitive: true,
     });
+
+    // now the AKS part
+
+    const rg2 = new ResourceGroup(this, 'ResourceGroup2', {
+      name: `rg-test-cdktf2`,
+      location: 'westeurope',
+    });
+
+    new NordcloudAks(this, 'NordcloudAks', {
+      location: rg2.location,
+      name: 'nordcloud-aks',
+      rgName: rg2.name,
+      nodeCount: 1,
+      nodeSize: 'standard_a2_v2',
+      nginxEnable: true,
+      certbotEnable: true,
+    });
+
+
   }
 }
 

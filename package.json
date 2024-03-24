@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@cdktf/provider-azurerm": "^12.11.0",
+    "@cdktf/provider-helm": "^10.0.0",
     "cdktf": "^0.20.5",
     "constructs": "^10.3.0"
   },
